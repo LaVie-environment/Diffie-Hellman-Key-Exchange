@@ -203,7 +203,7 @@ const STEPS = [
     bobSummary:   s => `p = ${fmtBig(s.p)},  g = ${fmtBig(s.g)}`,
     explanation:  s => `
       <div class="mod-explainer">
-        💡 <strong>What does "mod" mean?</strong><br>
+         <strong>What does "mod" mean?</strong><br>
         "mod" means the <strong>remainder after dividing</strong>.<br>
         Example: <strong>8 mod 5 = 3</strong>, because 8 ÷ 5 = 1 remainder <strong>3</strong>.<br>
         Think of it as clock arithmetic — after 12 comes 1 again.
@@ -232,11 +232,11 @@ const STEPS = [
       <p>Now Alice and Bob each <strong>privately pick their own secret number</strong>.</p>
       <p>Alice types her secret in her card on the left. Bob types his secret in his card on the right.
          These numbers must be at least <strong>1</strong> and smaller than <strong>p</strong>.
-         🔒 They <strong>never show these numbers to anyone</strong> — not even to each other!</p>`,
+          They <strong>never show these numbers to anyone</strong> — not even to each other!</p>`,
     explanation: s => `
       <p>Alice chose her secret number <strong>a = ${fmtBig(s.a)}</strong>.</p>
       <p>Bob chose his secret number <strong>b = ${fmtBig(s.b)}</strong>.</p>
-      <p>🔒 These stay completely private — they never leave each person's own device.</p>`,
+      <p> These stay completely private — they never leave each person's own device.</p>`,
   },
   {
     // Step 3 — Alice computes A
@@ -257,8 +257,8 @@ const STEPS = [
          to create her <strong>public number A</strong>. She does this using a special maths trick:</p>
       <p class="calc-line">A = g<sup>a</sup> mod p &nbsp;→&nbsp; <strong>${fmtModExp('A', s.g, s.a, s.p, s.A)}</strong></p>
       <div class="mod-explainer">
-        💡 <strong>Remember:</strong> "mod p" means take the remainder after dividing by p.<br>
-        This mixing is easy to do forwards, but <strong>very hard to undo</strong> — like scrambling an egg.
+       <strong>Remember:</strong> "mod p" means take the remainder after dividing by p.<br>
+        This mixing is easy to do forwards, but <strong>very hard to undo</strong> like scrambling an egg.
         Nobody can work out Alice's secret <em>a</em> just by looking at A.
       </div>
       <p>Alice keeps A ready to send — but first waits for Bob to do the same.</p>`,
@@ -283,7 +283,7 @@ const STEPS = [
          <strong>public number B</strong>:</p>
       <p class="calc-line">B = g<sup>b</sup> mod p &nbsp;→&nbsp; <strong>${fmtModExp('B', s.g, s.b, s.p, s.B)}</strong></p>
       <div class="mod-explainer">
-        💡 Just like Alice, Bob's public number B is safe to share. Even if someone sees B,
+         Just like Alice, Bob's public number B is safe to share. Even if someone sees B,
         they <strong>cannot work backwards</strong> to find Bob's secret <em>b</em>.
         It is very hard to work backwards and find the secret number.
       </div>
@@ -310,11 +310,11 @@ const STEPS = [
     explanation:  s => `
       <p>Alice and Bob now <strong>send their public numbers</strong> to each other over the internet — at the same time:</p>
       <ul class="plain-list">
-        <li>📤 <strong>Alice sends A = ${fmtBig(s.A)}</strong> to Bob.</li>
-        <li>📤 <strong>Bob sends B = ${fmtBig(s.B)}</strong> to Alice.</li>
+        <li> <strong>Alice sends A = ${fmtBig(s.A)}</strong> to Bob.</li>
+        <li> <strong>Bob sends B = ${fmtBig(s.B)}</strong> to Alice.</li>
       </ul>
       <div class="mod-explainer">
-        🔒 <strong>Why is it safe to share these numbers?</strong><br>
+         <strong>Why is it safe to share these numbers?</strong><br>
         Anyone watching the internet can see A and B — and that is perfectly fine!
         Even with A and B in hand, it is <strong>very hard to work backwards</strong> to find Alice's secret <em>a</em>
         or Bob's secret <em>b</em>. The mixing trick only works one way, like scrambling an egg.
@@ -341,8 +341,8 @@ const STEPS = [
     explanation:  s => `
       <p>The public numbers have arrived:</p>
       <ul class="plain-list">
-        <li>📬 <strong>Alice receives B = ${fmtBig(s.B)}</strong> from Bob.</li>
-        <li>📬 <strong>Bob receives A = ${fmtBig(s.A)}</strong> from Alice.</li>
+        <li><strong>Alice receives B = ${fmtBig(s.B)}</strong> from Bob.</li>
+        <li><strong>Bob receives A = ${fmtBig(s.A)}</strong> from Alice.</li>
       </ul>
       <p>Now both Alice and Bob have each other's public numbers. They are ready to create their shared secret!</p>`,
   },
@@ -372,10 +372,10 @@ const STEPS = [
       <p><strong>Bob</strong> uses his secret <em>b</em> and Alice's public information A to compute the shared secret:</p>
       <p class="calc-line">K = A<sup>b</sup> mod p &nbsp;→&nbsp; <strong>K = ${fmtBig(s.K_bob)}</strong></p>
       <div class="mod-explainer">
-        ✨ <strong>The magic moment!</strong><br>
+         <strong>The magic moment!</strong><br>
         Even though Alice and Bob used <em>different</em> numbers to calculate K,
         they both get the <strong>same answer</strong>. This works because of how the mod maths balances out.<br><br>
-        🎉 <strong>Alice and Bob have created the same secret key without ever sending the secret itself!</strong><br><br>
+         <strong>Alice and Bob have created the same secret key without ever sending the secret itself!</strong><br><br>
         A stranger watching the conversation only saw p, g, A, and B — but they
         <strong>cannot work backwards to find the secret key K</strong>.
         It is very hard to work backwards and find the secret number.
@@ -395,7 +395,7 @@ function updateSecBanner(mode = 'custom') {
   if (!secBanner) return;
   secBanner.className = 'sec-banner warn';
   secBanner.textContent =
-    '📖 Small numbers are fine for learning how it works. For real private messages, use much larger numbers (2048+ bits).';
+    'Small numbers are fine for learning how it works. For real private messages, use much larger numbers (2048+ bits).';
 }
 function setMode(mode = 'custom') {
   // No preset is selected by default: users must choose p and g themselves.
@@ -680,12 +680,12 @@ function confirmSecrets() {
   if (!inputA.value.trim()) {
     const autoA = randomSecret(p);
     inputA.value = autoA.toString();
-    errorA.textContent = `ℹ️ Auto-generated a random secret for Alice.`;
+    errorA.textContent = `Auto-generated a random secret for Alice.`;
   }
   if (!inputB.value.trim()) {
     const autoB = randomSecret(p);
     inputB.value = autoB.toString();
-    errorB.textContent = `ℹ️ Auto-generated a random secret for Bob.`;
+    errorB.textContent = `Auto-generated a random secret for Bob.`;
   }
 
   const rawA = inputA.value.trim();
@@ -791,7 +791,7 @@ function resetUI() {
     <p>Alice and Bob need to agree on two numbers that everyone can see — a <strong>prime number p</strong>
        and a <strong>starting number g</strong>. Type them above and click
        <strong>Agree on Parameters</strong> to begin.</p>
-    <p>💡 Small numbers are fine for learning. Use the <kbd>←</kbd> <kbd>→</kbd> arrow keys to move between steps.</p>`;
+    <p>Small numbers are fine for learning. Use the <kbd>←</kbd> <kbd>→</kbd> arrow keys to move between steps.</p>`;
   typeset([expl]);
 }
 
