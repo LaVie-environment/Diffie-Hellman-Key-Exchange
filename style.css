@@ -2,7 +2,7 @@
    Diffie-Hellman Demo — style.css  (Redesigned: Soft Lavender Light)
    ═══════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500;600&display=swap');
 
 /* ── Reset & CSS Variables ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,8 +47,8 @@
 
   /* Fonts */
   --mono:      'DM Mono', 'JetBrains Mono', 'Fira Code', monospace;
-  --body:      'DM Sans', system-ui, sans-serif;
-  --display:   'Playfair Display', Georgia, serif;
+  --body:      'Inter', system-ui, sans-serif;
+  --display:   'Inter', system-ui, sans-serif;
 }
 
 html { scroll-behavior: smooth; }
@@ -84,11 +84,11 @@ header {
 
 header .logo {
   font-family: var(--display);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--accent);
   text-decoration: none;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.4px;
   background: linear-gradient(135deg, var(--accent), var(--purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -190,7 +190,7 @@ main {
   font-size: 1.35rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.5px;
 }
 .party-card.alice h3 { color: var(--alice); }
 .party-card.bob h3   { color: var(--bob); }
