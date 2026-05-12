@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diffie-Hellman Key Exchange – Interactive Demo</title>
+
+  <!-- MathJax for LaTeX rendering -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" defer></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Header ───────────────────────────────────────────────── -->
+  <header>
+    <span class="logo">Diffie-Hellman Interactive Demo</span>
+  </header>
+
+  <!-- ── Main ─────────────────────────────────────────────────── -->
+  <main>
+    <div class="scene" id="scene">
+
+      <!-- ── Alice ─────────────────────────────────────────── -->
+      <div class="party-card alice" id="alice-card">
+        <h3>Alice</h3>
+        <h5>Parameters known by Alice:</h5>
+        <div class="param-summary" id="alice-summary">—</div>
+
+        <div class="param-row" id="a-p">
+          <div class="param-label">The agreed prime number p (the "clock size")</div>
+          <div class="param-value" id="a-p-val">—</div>
+        </div>
+
+        <div class="param-row" id="a-g">
+          <div class="param-label">The agreed starting number g</div>
+          <div class="param-value" id="a-g-val">—</div>
+        </div>
+
+        <div class="param-row" id="a-a">
+          <div class="param-label">Alice's secret number a (kept private — never shared)</div>
+          <div class="param-value alice-v" id="a-a-val">—</div>
+          <input type="text" id="input-a" class="secret-input alice-secret"
+                 placeholder="Alice types her secret number here…" inputmode="numeric" style="display:none;" />
+          <div class="input-error secret-error" id="error-a"></div>
+        </div>
+
+        <div class="param-row" id="a-A">
+          <div class="param-label">Alice mixes her secret with g to get her public number A = g<sup>a</sup> mod p</div>
+          <div class="param-value alice-v" id="a-A-val">—</div>
+        </div>
+
+        <div class="param-row" id="a-B">
+          <div class="param-label">Alice receives Bob's public number B</div>
+          <div class="param-value bob-v" id="a-B-val">—</div>
+        </div>
+
+        <div class="param-row" id="a-K">
+          <div class="param-label">
+            Alice uses her secret a and Bob's public information B to compute the shared secret K = B<sup>a</sup> mod p
+          </div>
+          <div class="param-value shared-v" id="a-K-val">—</div>
+        </div>
+      </div>
+
+      <!-- ── Center Panel ───────────────────────────────────── -->
+      <div class="center-panel">
+
+        <div class="step-counter">
+          Step <span id="step-cur">0</span> / <span id="step-tot">7</span>
+        </div>
+
+        <!-- Public parameters input -->
+        <div class="public-params">
+          <h4>Alice &amp; Bob agree on a prime p and generator g</h4>
+          <p class="params-hint">
+            Type a prime number for <strong>p</strong> and a starting number for <strong>g</strong> below.
+            Small numbers (like p = 23, g = 5) work great for learning how this works!
+            For real-world private messages, much bigger numbers are used.
+          </p>
+
+          <!-- Security level banner -->
+          <div class="sec-banner" id="sec-banner"></div>
+
+          <!-- p field — always visible, always editable -->
+          <div class="input-group">
+            <div class="param-field-header">
+              <label for="input-p">prime number <strong>p</strong> — the "clock size" for calculations</label>
+            </div>
+            <textarea id="input-p" class="param-input param-textarea"
+                      placeholder="Enter a prime number… e.g. 23"
+                      autocomplete="off" spellcheck="false" rows="3"></textarea>
+          </div>
+
+          <!-- g field — always visible, always editable -->
+          <div class="input-group" style="margin-top:0.6rem;">
+            <label for="input-g">starting number <strong>g</strong> — must be a whole number smaller than p &nbsp;(e.g. 5)</label>
+            <input type="text" id="input-g" class="param-input"
+                   placeholder="e.g. 5" inputmode="numeric" autocomplete="off" />
+          </div>
+
+          <div class="input-error" id="input-error"></div>
+        </div>
+
+        <!-- Agree button -->
+        <button class="btn-generate" id="btn-gen">Agree on Parameters →</button>
+
+        <!-- Loading spinner -->
+        <div class="spinner-wrap" id="spinner" style="display:none;">
+          <div class="spinner"></div>
+          <span>Computing…</span>
+        </div>
+
+        <!-- Confirm secrets button (Step 2 only) -->
+        <div id="confirm-secrets-wrap" style="display:none;">
+          <div class="secret-hint">
+            Both Alice and Bob need to pick their own secret numbers. Type them in the cards on the left and right, then click below.
+          </div>
+          <button class="btn-generate btn-confirm" id="btn-confirm-secrets">
+            Confirm Secrets →
+          </button>
+          <div class="input-error" id="error-secrets"></div>
+        </div>
+
+        <!-- Shared key badge -->
+        <div class="shared-key-badge" id="shared-badge">
+          <div class="badge-label">Alice and Bob now share the same secret key!</div>
+          <div class="badge-sub">They created it together without ever sending the secret itself.</div>
+          <div class="badge-val" id="badge-k-val"></div>
+        </div>
+
+        <!-- Agreed values display -->
+        <div class="agreed-display" id="agreed-display" style="display:none;">
+          <div class="agreed-values-row">
+            <div class="agreed-row">
+              <span class="agreed-label">\( p \)</span>
+              <span class="agreed-val" id="pub-p">—</span>
+            </div>
+            <div class="agreed-row">
+              <span class="agreed-label">\( g \)</span>
+              <span class="agreed-val" id="pub-g">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explanation -->
+        <div class="explanation-box" id="explanation">
+          <p>Alice and Bob want to share a secret — but they can only talk over the internet where anyone can listen!</p>
+          <p>They will use a clever maths trick so that <strong>Alice and Bob create the same secret key without sending the secret itself</strong>.</p>
+          <p>To start, type a prime number for <strong>p</strong> and a starting number for <strong>g</strong> above, then click <strong>Agree on Parameters</strong>.</p>
+          <p>Try: p = <strong>23</strong>, g = <strong>5</strong> &nbsp;—&nbsp; Use the <kbd>←</kbd> <kbd>→</kbd> arrow keys to move between steps.</p>
+        </div>
+
+        <!-- Progress dots -->
+        <div class="progress-dots" id="dots"></div>
+
+        <!-- Navigation -->
+        <div class="nav-buttons">
+          <button class="btn-nav" id="btn-prev" disabled>← Previous</button>
+          <button class="btn-nav try-again" id="btn-try">↺ Try Again</button>
+          <button class="btn-nav" id="btn-next" disabled>Next →</button>
+        </div>
+
+        <div class="kbd-hint">Use <kbd>←</kbd> <kbd>→</kbd> to navigate</div>
+      </div>
+
+      <!-- ── Bob ────────────────────────────────────────────── -->
+      <div class="party-card bob" id="bob-card">
+        <h3>Bob</h3>
+        <h5>Parameters known by Bob:</h5>
+        <div class="param-summary" id="bob-summary">—</div>
+
+        <div class="param-row" id="b-p">
+          <div class="param-label">The agreed prime number p (the "clock size")</div>
+          <div class="param-value" id="b-p-val">—</div>
+        </div>
+
+        <div class="param-row" id="b-g">
+          <div class="param-label">The agreed starting number g</div>
+          <div class="param-value" id="b-g-val">—</div>
+        </div>
+
+        <div class="param-row" id="b-b">
+          <div class="param-label">Bob's secret number b (kept private — never shared)</div>
+          <div class="param-value bob-v" id="b-b-val">—</div>
+          <input type="text" id="input-b" class="secret-input bob-secret"
+                 placeholder="Bob types his secret number here…" inputmode="numeric" style="display:none;" />
+          <div class="input-error secret-error" id="error-b"></div>
+        </div>
+
+        <div class="param-row" id="b-B">
+          <div class="param-label">Bob mixes his secret with g to get his public number B = g<sup>b</sup> mod p</div>
+          <div class="param-value bob-v" id="b-B-val">—</div>
+        </div>
+
+        <div class="param-row" id="b-A">
+          <div class="param-label">Bob receives Alice's public number A</div>
+          <div class="param-value alice-v" id="b-A-val">—</div>
+        </div>
+
+        <div class="param-row" id="b-K">
+          <div class="param-label">
+            Bob uses his secret b and Alice's public information A to compute the shared secret K = A<sup>b</sup> mod p
+          </div>
+          <div class="param-value shared-v" id="b-K-val">—</div>
+        </div>
+      </div>
+
+    </div><!-- /scene -->
+  </main>
+
+  <footer>
+    Copyright © Taofeek Bello
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
