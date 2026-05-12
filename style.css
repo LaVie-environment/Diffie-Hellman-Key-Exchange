@@ -688,7 +688,7 @@ main {
   position: relative;
 }
 .explanation-box::before {
-  content: '💡';
+  /*content: '💡';*/
   position: absolute;
   top: -12px; left: 14px;
   background: var(--card);
