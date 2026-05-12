@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diffie-Hellman Key Exchange – Interactive Demo</title>
+  <title>Diffie-Hellman Key Exchange Interactive Demo</title>
 
   <!-- MathJax for LaTeX rendering -->
   <script>
@@ -34,7 +34,7 @@
         <div class="param-summary" id="alice-summary">—</div>
 
         <div class="param-row" id="a-p">
-          <div class="param-label">The agreed prime number p (the "clock size")</div>
+          <div class="param-label">The agreed prime number p</div>
           <div class="param-value" id="a-p-val">—</div>
         </div>
 
@@ -44,7 +44,7 @@
         </div>
 
         <div class="param-row" id="a-a">
-          <div class="param-label">Alice's secret number a (kept private — never shared)</div>
+          <div class="param-label">Alice's secret number a (never shared)</div>
           <div class="param-value alice-v" id="a-a-val">—</div>
           <input type="text" id="input-a" class="secret-input alice-secret"
                  placeholder="Alice types her secret number here…" inputmode="numeric" style="display:none;" />
@@ -130,7 +130,7 @@
 
         <!-- Shared key badge -->
         <div class="shared-key-badge" id="shared-badge">
-          <div class="badge-label">Alice and Bob now share the same secret key!</div>
+          <div class="badge-label">Alice and Bob now share the same secret key</div>
           <div class="badge-sub">They created it together without ever sending the secret itself.</div>
           <div class="badge-val" id="badge-k-val"></div>
         </div>
@@ -151,7 +151,7 @@
 
         <!-- Explanation -->
         <div class="explanation-box" id="explanation">
-          <p>Alice and Bob want to share a secret — but they can only talk over the internet where anyone can listen!</p>
+          <p>Alice and Bob want to share a secret but they can only talk over the internet where anyone can listen</p>
           <p>They will use a clever maths trick so that <strong>Alice and Bob create the same secret key without sending the secret itself</strong>.</p>
           <p>To start, type a prime number for <strong>p</strong> and a starting number for <strong>g</strong> above, then click <strong>Agree on Parameters</strong>.</p>
           <p>Try: p = <strong>23</strong>, g = <strong>5</strong> &nbsp;—&nbsp; Use the <kbd>←</kbd> <kbd>→</kbd> arrow keys to move between steps.</p>
@@ -177,7 +177,7 @@
         <div class="param-summary" id="bob-summary">—</div>
 
         <div class="param-row" id="b-p">
-          <div class="param-label">The agreed prime number p (the "clock size")</div>
+          <div class="param-label">The agreed prime number p</div>
           <div class="param-value" id="b-p-val">—</div>
         </div>
 
@@ -187,7 +187,7 @@
         </div>
 
         <div class="param-row" id="b-b">
-          <div class="param-label">Bob's secret number b (kept private — never shared)</div>
+          <div class="param-label">Bob's secret number b (never shared)</div>
           <div class="param-value bob-v" id="b-b-val">—</div>
           <input type="text" id="input-b" class="secret-input bob-secret"
                  placeholder="Bob types his secret number here…" inputmode="numeric" style="display:none;" />
