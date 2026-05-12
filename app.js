@@ -236,7 +236,7 @@ const STEPS = [
     explanation: s => `
       <p>Alice chose her secret number <strong>a = ${fmtBig(s.a)}</strong>.</p>
       <p>Bob chose his secret number <strong>b = ${fmtBig(s.b)}</strong>.</p>
-      <p> These stay completely private — they never leave each person's own device.</p>`,
+      <p> These stay completely private they never leave each person's own device.</p>`,
   },
   {
     // Step 3 — Alice computes A
@@ -261,7 +261,7 @@ const STEPS = [
         This mixing is easy to do forwards, but <strong>very hard to undo</strong> like scrambling an egg.
         Nobody can work out Alice's secret <em>a</em> just by looking at A.
       </div>
-      <p>Alice keeps A ready to send — but first waits for Bob to do the same.</p>`,
+      <p>Alice keeps A ready to send but first waits for Bob to do the same.</p>`,
   },
   {
     // Step 4 — Bob computes B
@@ -287,7 +287,7 @@ const STEPS = [
         they <strong>cannot work backwards</strong> to find Bob's secret <em>b</em>.
         It is very hard to work backwards and find the secret number.
       </div>
-      <p>Both public numbers A and B are now ready. Time to swap them!</p>`,
+      <p>Both public numbers A and B are now ready. Time to swap them</p>`,
   },
   {
     // Step 5 — Alice and Bob exchange their public numbers simultaneously
@@ -308,14 +308,14 @@ const STEPS = [
     aliceSummary: s => `p = ${fmtBig(s.p)},  g = ${fmtBig(s.g)},  a = ${fmtBig(s.a)},  A = ${fmtBig(s.A)},  B = ${fmtBig(s.B)}`,
     bobSummary:   s => `p = ${fmtBig(s.p)},  g = ${fmtBig(s.g)},  b = ${fmtBig(s.b)},  B = ${fmtBig(s.B)},  A = ${fmtBig(s.A)}`,
     explanation:  s => `
-      <p>Alice and Bob now <strong>send their public numbers</strong> to each other over the internet — at the same time:</p>
+      <p>Alice and Bob now <strong>send their public numbers</strong> to each other over the internet at the same time:</p>
       <ul class="plain-list">
         <li> <strong>Alice sends A = ${fmtBig(s.A)}</strong> to Bob.</li>
         <li> <strong>Bob sends B = ${fmtBig(s.B)}</strong> to Alice.</li>
       </ul>
       <div class="mod-explainer">
          <strong>Why is it safe to share these numbers?</strong><br>
-        Anyone watching the internet can see A and B — and that is perfectly fine!
+        Anyone watching the internet can see A and B — and that is perfectly fine.
         Even with A and B in hand, it is <strong>very hard to work backwards</strong> to find Alice's secret <em>a</em>
         or Bob's secret <em>b</em>. The mixing trick only works one way, like scrambling an egg.
       </div>`,
@@ -602,14 +602,14 @@ function agree() {
       setSpinner(false);
       inputError.textContent =
         `That number is not a prime. Please enter a prime number for p. ` +
-        `(A prime number can only be divided evenly by 1 and itself — like 7, 11, 13, 23…)`;
+        `(A prime number can only be divided evenly by 1 and itself like 7, 11, 13, 23…)`;
       inputP.classList.add('error'); return;
     }
 
     // ── 5. Security label ────────────────────────────────────────
     const label = pBits >= 2048
-      ? `Your ${pBits}-bit prime — secure for real use ✓`
-      : `Your ${pBits}-bit prime — good for learning, too small for real use ⚠`;
+      ? `Your ${pBits}-bit prime — secure for real use`
+      : `Your ${pBits}-bit prime — good for learning, too small for real use`;
 
     setSpinner(false);
     _finaliseAgree(p, g, label);
@@ -642,9 +642,9 @@ function _finaliseAgree(p, g, label) {
       'font-size:0.72rem;color:var(--muted);margin-top:0.25rem;font-family:var(--mono);';
     agreedDisplay.appendChild(bitInfoEl);
   }
-  const secLevel = pBits >= 2048 ? '✓ Safe for real use'
-                 : pBits >= 512  ? '⚠ Too small for real use — learning only'
-                 :                  '✗ Very small — demonstration only';
+  const secLevel = pBits >= 2048 ? 'Safe for real use'
+                 : pBits >= 512  ? 'Too small for real use — learning only'
+                 :                  'Very small — demonstration only';
   bitInfoEl.innerHTML =
     `<span style="color:${pBits >= 2048 ? 'var(--green)' : 'var(--accent2)'}">${secLevel}</span>` +
     ` &nbsp;|&nbsp; p is ${pBits} bits long &nbsp;|&nbsp; ${label}`;
@@ -655,7 +655,7 @@ function _finaliseAgree(p, g, label) {
   document.querySelectorAll('.key-size-btn').forEach(b => b.disabled = true);
   if (btnResetP) btnResetP.disabled = true;
 
-  btnGen.textContent = '✓ Agreed — click Next to start';
+  btnGen.textContent = 'Agreed — click Next to start';
   btnGen.disabled  = true;
   btnNext.disabled = false;
   btnPrev.disabled = true;
