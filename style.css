@@ -264,6 +264,9 @@ main {
 .param-value.bob-v    { color: var(--bob); }
 .param-value.shared-v { color: var(--shared); }
 
+/* Superscript exponent inside param-value cells */
+.param-value sup { font-size: 0.65em; vertical-align: super; line-height: 0; }
+
 /* ── Live param summary ─────────────────────────────────────────── */
 .param-summary {
   font-size: 0.88rem;
@@ -842,6 +845,40 @@ footer {
   border: 1px solid rgba(124,77,255,0.18);
 }
 .calc-line strong { color: var(--text); }
+
+/* ── Color-coded modular arithmetic values ──────────────────────────
+   Each part of  label = base^exp mod modulus = result  gets its own
+   colour so lay audiences can distinguish the values even when two
+   numbers happen to be identical (e.g. g = 5 and B = 5).           */
+.calc-base   { color: var(--alice);  font-weight: 700; }   /* base  (g or B or A) — blue  */
+.calc-exp    { color: var(--bob);    font-weight: 700; font-style: italic; }   /* exponent (a or b)   — red   */
+.calc-mod    { color: var(--purple); font-weight: 700; }   /* modulus p           — purple */
+.calc-mod-kw { color: var(--muted);  font-weight: 500; font-size: 0.85em; letter-spacing: 0.04em; }
+.calc-result { color: var(--shared); font-weight: 700; }   /* result              — green  */
+
+/* Legend pill that explains the colour coding */
+.calc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+  font-family: var(--mono);
+}
+.calc-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.18rem 0.5rem;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border-lt);
+}
+.calc-legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 
 /* ── Secret value inputs ────────────────────────────────────────── */
 .secret-input {

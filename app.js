@@ -84,12 +84,32 @@ function fmtBig(n) {
   return `${s.slice(0, 40)}…${s.slice(-20)} (${s.length} digits)`;
 }
 
-/** Show a substituted modular-exponentiation calculation. */
+/** Show a substituted modular-exponentiation calculation with color-coded HTML. */
 function fmtModExp(label, base, exp, mod, result) {
-  return `${label} = ${fmtBig(base)}^${fmtBig(exp)} mod ${fmtBig(mod)} = ${fmtBig(result)}`;
+  // Each value gets a distinct colour so lay audiences can tell them apart
+  // even when two values happen to be numerically equal.
+  return (
+    `${label} = ` +
+    `<span class="calc-base">${fmtBig(base)}</span>` +
+    `<sup class="calc-exp">${fmtBig(exp)}</sup>` +
+    ` <span class="calc-mod-kw">mod</span> ` +
+    `<span class="calc-mod">${fmtBig(mod)}</span>` +
+    ` = ` +
+    `<span class="calc-result">${fmtBig(result)}</span>`
+  );
 }
 
-/** Parse a string as BigInt, return null on failure. */
+/** Colour legend for lay audiences — explains what each colour means. */
+function calcLegend(baseLabel, expLabel) {
+  return `
+    <div class="calc-legend">
+      <span class="calc-legend-item"><span class="calc-legend-dot" style="background:var(--alice)"></span><span class="calc-base">${baseLabel}</span> base</span>
+      <span class="calc-legend-item"><span class="calc-legend-dot" style="background:var(--bob)"></span><span class="calc-exp">${expLabel}</span> exponent (secret)</span>
+      <span class="calc-legend-item"><span class="calc-legend-dot" style="background:var(--purple)"></span><span style="color:var(--purple)">p</span> prime modulus</span>
+      <span class="calc-legend-item"><span class="calc-legend-dot" style="background:var(--shared)"></span><span class="calc-result">result</span></span>
+    </div>`;
+}
+
 function parseBig(str) {
   const s = str.trim().replace(/\s/g, '');
   if (!s) return null;
@@ -256,6 +276,7 @@ const STEPS = [
       <p>Alice mixes her secret number with the shared starting number <strong>g</strong>
          to create her <strong>public number A</strong>. She does this using a special maths trick:</p>
       <p class="calc-line">A = g<sup>a</sup> mod p &nbsp;→&nbsp; <strong>${fmtModExp('A', s.g, s.a, s.p, s.A)}</strong></p>
+      ${calcLegend('g', 'a')}
       <div class="mod-explainer">
        <strong>Remember:</strong> "mod p" means take the remainder after dividing by p.<br>
         This mixing is easy to do forwards, but <strong>very hard to undo</strong> like scrambling an egg.
@@ -282,6 +303,7 @@ const STEPS = [
       <p>Bob does the exact same mixing trick with his own secret number to create his
          <strong>public number B</strong>:</p>
       <p class="calc-line">B = g<sup>b</sup> mod p &nbsp;→&nbsp; <strong>${fmtModExp('B', s.g, s.b, s.p, s.B)}</strong></p>
+      ${calcLegend('g', 'b')}
       <div class="mod-explainer">
          Just like Alice, Bob's public number B is safe to share. Even if someone sees B,
         they <strong>cannot work backwards</strong> to find Bob's secret <em>b</em>.
@@ -369,8 +391,10 @@ const STEPS = [
     explanation:  s => `
       <p><strong>Alice</strong> uses her secret <em>a</em> and Bob's public information B to compute the shared secret:</p>
       <p class="calc-line">K = B<sup>a</sup> mod p &nbsp;→&nbsp; <strong>K = ${fmtBig(s.K)}</strong></p>
+      ${calcLegend('B', 'a')}
       <p><strong>Bob</strong> uses his secret <em>b</em> and Alice's public information A to compute the shared secret:</p>
       <p class="calc-line">K = A<sup>b</sup> mod p &nbsp;→&nbsp; <strong>K = ${fmtBig(s.K_bob)}</strong></p>
+      ${calcLegend('A', 'b')}
       <div class="mod-explainer">
          <strong>The magic moment!</strong><br>
         Even though Alice and Bob used <em>different</em> numbers to calculate K,
@@ -496,10 +520,10 @@ function renderStep() {
 
   btnTry.classList.add('visible');
 
-  // Fill cells
+  // Fill cells — use innerHTML so fmtModExp colour-spans and <sup> tags render
   Object.entries(stepDef.cells).forEach(([id, fn]) => {
     const el = $(id);
-    if (el) el.textContent = fn(data);
+    if (el) el.innerHTML = fn(data);
   });
 
   // Update summaries

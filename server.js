@@ -5,7 +5,7 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 // ── Serve static files from /public ──────────────────────────────
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '.')));
 
 // ── API: Generate Diffie-Hellman parameters server-side ──────────
 app.get('/api/generate', (req, res) => {
@@ -28,12 +28,12 @@ app.get('/api/generate', (req, res) => {
 
 // ── Fallback: serve index.html for any unknown route ────────────
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ── Start server ─────────────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`\n🔐 Diffie-Hellman Demo running at http://localhost:${PORT}\n`);
+  console.log(`\n Diffie-Hellman Demo running at http://localhost:${PORT}\n`);
 });
 
 // ════════════════════════════════════════════════════════════════
