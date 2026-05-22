@@ -19,8 +19,28 @@
 <body>
 
   <!-- ── Header ───────────────────────────────────────────────── -->
-  <header>
-    <span class="logo">Diffie-Hellman Interactive Demo</span>
+  <header class="site-header">
+    <div class="header-content">
+      <span class="logo">Diffie-Hellman Interactive Demo</span>
+
+      <section class="dh-intro" aria-labelledby="dh-intro-title">
+        <p class="intro-kicker">Before you begin</p>
+        <h1 id="dh-intro-title">How can two people create the same secret in public?</h1>
+        <p>
+          Imagine you and a friend want to create a secret color of paint, but a hacker
+          — someone eavesdropping on everything you send — is listening. You can only
+          communicate by sending paint cans back and forth in public, where anyone can
+          see them. How can you both agree on the same secret color without the hacker
+          figuring it out?
+        </p>
+        <p>
+          That is exactly the problem the Diffie-Hellman algorithm solves. It lets two
+          people exchange information openly, yet still arrive at the same secret without
+          an eavesdropper being able to recreate it, even though they saw everything being
+          shared.
+        </p>
+      </section>
+    </div>
   </header>
 
   <!-- ── Main ─────────────────────────────────────────────────── -->

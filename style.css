@@ -68,18 +68,23 @@ body {
 
 /* ── Header ─────────────────────────────────────────────────────── */
 header {
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-lt);
-  padding: 0.9rem 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  padding: 1rem 1.5rem;
   position: sticky;
   top: 0;
   z-index: 100;
   box-shadow: 0 1px 0 var(--border-lt), var(--shadow-sm);
+}
+
+.header-content {
+  max-width: 1260px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 header .logo {
@@ -93,6 +98,46 @@ header .logo {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.dh-intro {
+  background:
+    linear-gradient(135deg, rgba(79,110,247,0.1), rgba(124,77,255,0.08)),
+    var(--card);
+  border: 1.5px solid var(--border-lt);
+  border-radius: var(--radius);
+  padding: 1rem 1.15rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.dh-intro .intro-kicker {
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.dh-intro h1 {
+  color: var(--text);
+  font-family: var(--display);
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  margin-bottom: 0.55rem;
+}
+
+.dh-intro p {
+  color: var(--text-mid);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  max-width: 980px;
+}
+
+.dh-intro p + p {
+  margin-top: 0.45rem;
 }
 
 header nav {
@@ -975,6 +1020,9 @@ footer {
 
 @media (max-width: 600px) {
   header  { padding: 0.8rem 1rem; }
+  .header-content { gap: 0.6rem; }
+  .dh-intro { padding: 0.85rem; }
+  .dh-intro p { font-size: 0.88rem; line-height: 1.55; }
   main    { padding: 0.75rem 0.8rem 1.5rem; }
   .scene  { gap: 0.75rem; }
 }
