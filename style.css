@@ -73,9 +73,8 @@ header {
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-lt);
   padding: 1rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: relative;
+  z-index: 1;
   box-shadow: 0 1px 0 var(--border-lt), var(--shadow-sm);
 }
 
@@ -133,7 +132,8 @@ header .logo {
   color: var(--text-mid);
   font-size: 0.95rem;
   line-height: 1.65;
-  max-width: 980px;
+  max-width: none;
+  width: 100%;
 }
 
 .dh-intro p + p {

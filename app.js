@@ -256,7 +256,7 @@ const STEPS = [
     explanation: s => `
       <p>Alice chose her secret number <strong>a = ${fmtBig(s.a)}</strong>.</p>
       <p>Bob chose his secret number <strong>b = ${fmtBig(s.b)}</strong>.</p>
-      <p> These stay completely private they never leave each person's own device.</p>`,
+      <p> These numbers stay completely private — each person keeps their own secret number hidden and never reveals it to anyone.</p>`,
   },
   {
     // Step 3 — Alice computes A
