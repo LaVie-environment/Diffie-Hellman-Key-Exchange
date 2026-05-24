@@ -24,16 +24,15 @@
       <span class="logo">Diffie-Hellman Interactive Demo</span>
 
       <section class="dh-intro" aria-labelledby="dh-intro-title">
-        <h1 id="dh-intro-title">How can two parties establish a shared secret over an insecure medium?</h1>
+        <h1 id="dh-intro-title">How can two people share a secret in public without anyone finding it out?</h1>
         <p>
-          Imagine you and a friend want to create a secret color of paint, but a hacker (someone who can see every paint can you send) is listening - and you can only
-          communicate by sending paint cans back and forth in public. How can you both agree on the same secret color without the hacker figuring it out?
+          Every person deserves the right to a private conversation, even in a world where someone is always watching.
+Imagine you and a friend are mixing paint colors in public. You each start with the same base color, add your own secret color privately, then swap your mixtures openly. Even though a hacker (someone who can see every paint can you send) sees every can you exchange, they can never recreate your secret because they never see your private color.
         </p>
         <p>
-          That is the problem the Diffie-Hellman key exchange algorithm solves. It lets two
-          people exchange information openly, yet still arrive at the same secret without
-          an eavesdropper being able to recreate it, even though they saw every can that was
-          shared.
+          That is exactly what the Diffie-Hellman key exchange algorithm does. It uses clock arithmetic — mixing numbers together is easy, but reversing it is nearly impossible — so two people can arrive at the same shared secret completely in the open, without ever revealing it.
+        </p>
+        <p>In this interactive demo, Alice and Bob are two fictitious people who want to create a shared secret key so they can encrypt their messages. Eve is the eavesdropper — she can see everything Alice and Bob send to each other, but she will never be able to work out the secret they created together.
         </p>
       </section>
     </div>
@@ -68,7 +67,7 @@
         </div>
 
         <div class="param-row" id="a-A">
-          <div class="param-label">Alice mixes her secret with g to get her public number A = g<sup>a</sup> mod p</div>
+          <div class="param-label">Alice mixes her secret with g to get her public number <span class="formula-tip" tabindex="0" data-tip="mod means the remainder after division. Example: 17 mod 5 = 2, because 17 ÷ 5 leaves a remainder of 2.">A = <span class="pow"><span class="pow-base">g</span><span class="pow-exp">a</span></span> mod p</span></div>
           <div class="param-value alice-v" id="a-A-val">—</div>
         </div>
 
@@ -79,7 +78,7 @@
 
         <div class="param-row" id="a-K">
           <div class="param-label">
-            Alice uses her secret a and Bob's public information B to compute the shared secret K = B<sup>a</sup> mod p
+            Alice uses her secret a and Bob's public information B to compute the shared secret <span class="formula-tip" tabindex="0" data-tip="mod means keep only the remainder after dividing by p. It keeps the result inside the public clock size.">K = <span class="pow"><span class="pow-base">B</span><span class="pow-exp">a</span></span> mod p</span>
           </div>
           <div class="param-value shared-v" id="a-K-val">—</div>
         </div>
@@ -92,6 +91,7 @@
           Step <span id="step-cur">0</span> / <span id="step-tot">7</span>
         </div>
 
+
         <!-- Public parameters input -->
         <div class="public-params">
           <h4>Alice &amp; Bob agree on a prime p and generator g</h4>
@@ -101,8 +101,6 @@
             For real-world private messages, much bigger numbers are used.
           </p>
 
-          <!-- Security level banner -->
-          <div class="sec-banner" id="sec-banner"></div>
 
           <!-- p field — always visible, always editable -->
           <div class="input-group">
@@ -126,6 +124,16 @@
 
         <!-- Agree button -->
         <button class="btn-generate" id="btn-gen">Agree on Parameters →</button>
+
+      <!-- ── Eve ────────────────────────────────────────────── -->
+      <aside class="eve-panel" id="eve-panel" aria-live="polite">
+        <h4>Eve's view</h4>
+        <p class="eve-intro">Eve can watch the public exchange, but private secrets stay hidden.</p>
+        <div class="eve-grid">
+          <div><span>Can see</span><strong id="eve-can-see">Nothing yet</strong></div>
+          <div><span>Cannot see</span><strong id="eve-cannot-see">Alice's a, Bob's b, shared K</strong></div>
+        </div>
+      </aside>
 
         <!-- Loading spinner -->
         <div class="spinner-wrap" id="spinner" style="display:none;">
@@ -151,21 +159,9 @@
           <div class="badge-val" id="badge-k-val"></div>
         </div>
 
-        <!-- Agreed values display -->
-        <div class="agreed-display" id="agreed-display" style="display:none;">
-          <div class="agreed-values-row">
-            <div class="agreed-row">
-              <span class="agreed-label">\( p \)</span>
-              <span class="agreed-val" id="pub-p">—</span>
-            </div>
-            <div class="agreed-row">
-              <span class="agreed-label">\( g \)</span>
-              <span class="agreed-val" id="pub-g">—</span>
-            </div>
-          </div>
-        </div>
+        <!-- Agreed values display removed to avoid duplicate p/g panel. -->
 
-        <!-- Center column intentionally contains only the public agreement controls. -->
+        <!-- Center column contains the public agreement controls and current action. -->
       </div>
 
       <!-- ── Bob ────────────────────────────────────────────── -->
@@ -193,7 +189,7 @@
         </div>
 
         <div class="param-row" id="b-B">
-          <div class="param-label">Bob mixes his secret with g to get his public number B = g<sup>b</sup> mod p</div>
+          <div class="param-label">Bob mixes his secret with g to get his public number <span class="formula-tip" tabindex="0" data-tip="mod means the remainder after division. Example: 17 mod 5 = 2, because 17 ÷ 5 leaves a remainder of 2.">B = <span class="pow"><span class="pow-base">g</span><span class="pow-exp">b</span></span> mod p</span></div>
           <div class="param-value bob-v" id="b-B-val">—</div>
         </div>
 
@@ -204,11 +200,12 @@
 
         <div class="param-row" id="b-K">
           <div class="param-label">
-            Bob uses his secret b and Alice's public information A to compute the shared secret K = A<sup>b</sup> mod p
+            Bob uses his secret b and Alice's public information A to compute the shared secret <span class="formula-tip" tabindex="0" data-tip="mod means keep only the remainder after dividing by p. It keeps the result inside the public clock size.">K = <span class="pow"><span class="pow-base">A</span><span class="pow-exp">b</span></span> mod p</span>
           </div>
           <div class="param-value shared-v" id="b-K-val">—</div>
         </div>
       </div>
+
 
     </div><!-- /scene -->
 
@@ -217,9 +214,9 @@
       <div class="explanation-box" id="explanation">
         <p>
           Alice and Bob want to share a secret, but they can only talk over the internet where anyone can listen.
-          They will use a clever maths trick so that <strong>Alice and Bob create the same secret key without sending the secret itself</strong>.
+          They will use a clock arithmetic so that <strong>Alice and Bob create the same secret key without sending the secret itself</strong>.
           To start, type a prime number for <strong>p</strong> and a starting number for <strong>g</strong> above, then click <strong>Agree on Parameters</strong>.
-          Try: <strong>p = 23</strong>, <strong>g = 5</strong> — use the <kbd>←</kbd> <kbd>→</kbd> arrow keys to move between steps.
+          Try: <strong>p = 23</strong>, <strong>g = 5</strong>
         </p>
       </div>
 

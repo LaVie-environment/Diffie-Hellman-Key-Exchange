@@ -217,10 +217,10 @@ main {
   gap: 1rem;
 }
 
-/* ── Three-column scene ─────────────────────────────────────────── */
+/* ── Main scene: Alice, controls/Eve, and Bob stay in one balanced row ── */
 .scene {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px) minmax(0, 1fr);
+  grid-template-columns: minmax(230px, 1fr) minmax(300px, 380px) minmax(230px, 1fr);
   gap: clamp(0.85rem, 1.6vw, 1.35rem);
   align-items: start;
 }
@@ -644,38 +644,6 @@ main {
   margin-top: 0.4rem;
 }
 
-/* ── Agreed values display ──────────────────────────────────────── */
-.agreed-display {
-  background: var(--purple-lt);
-  border: 1.5px solid rgba(91,33,182,0.25);
-  border-radius: var(--radius-sm);
-  padding: 0.65rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.agreed-values-row {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.agreed-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.88rem;
-}
-
-.agreed-label { color: var(--muted); }
-
-.agreed-val {
-  font-family: var(--mono);
-  font-size: 1rem;
-  color: var(--purple);
-  font-weight: 700;
-}
-
 /* ── Generate / action buttons ──────────────────────────────────── */
 .btn-generate {
   width: 100%;
@@ -1009,6 +977,38 @@ body > footer {
 }
 .calc-line strong { color: var(--text); }
 
+/* Keep modular exponent formulas readable: g^a should stay together. */
+.calc-power,
+.formula-power {
+  display: inline-flex;
+  align-items: flex-start;
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+.calc-power sup,
+.formula-power sup {
+  position: relative;
+  top: -0.45em;
+  margin-left: 0.08em;
+  font-size: 0.68em;
+  line-height: 1;
+  vertical-align: baseline;
+}
+
+.calc-line .formula-power {
+  color: var(--purple);
+  font-weight: 700;
+}
+
+.param-value .calc-power {
+  max-width: 100%;
+}
+
+
 /* Colour legend for the modular arithmetic display.
    calc-base  = blue  (Alice's hue)  calc-exp = orange-red (Bob's hue)
    calc-mod   = violet (accent)      calc-result = green (shared)      */
@@ -1154,4 +1154,178 @@ body > footer {
   .demo-footer { padding: 0.8rem; }
   .nav-buttons { flex-direction: column; }
   .btn-nav { width: 100%; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UX feedback implementation: Eve view and formula tooltips
+   ═══════════════════════════════════════════════════════════════ */
+.calc-line sup,
+.param-label sup,
+.param-value sup {
+  font-size: 0.7em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.eve-panel {
+  background: linear-gradient(135deg, rgba(30,27,75,0.96), rgba(76,29,149,0.92));
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 0.85rem;
+  box-shadow: var(--shadow-md);
+  min-width: 0;
+  align-self: start;
+}
+.eve-panel h4 {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.eve-intro {
+  font-size: 0.78rem;
+  opacity: 0.88;
+  line-height: 1.45;
+  margin-bottom: 0.65rem;
+}
+.eve-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+}
+.eve-grid div {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.65rem;
+}
+.eve-grid span {
+  display: block;
+  color: rgba(255,255,255,0.72);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.eve-grid strong {
+  display: block;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.formula-tip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--purple);
+  font-weight: 800;
+  cursor: help;
+  border-bottom: 1px dotted currentColor;
+}
+.formula-tip::after {
+  content: '?';
+  display: inline-grid;
+  place-items: center;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 50%;
+  background: var(--purple-lt);
+  border: 1px solid rgba(91,33,182,0.25);
+  font-size: 0.68rem;
+}
+.formula-tip:hover::before,
+.formula-tip:focus::before {
+  content: attr(data-tip);
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  width: min(280px, 80vw);
+  padding: 0.6rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background: var(--text);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.45;
+  box-shadow: var(--shadow-lg);
+}
+
+@media (min-width: 1101px) {
+  .scene {
+    grid-template-columns: minmax(230px, 1fr) minmax(300px, 380px) minmax(230px, 1fr);
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 701px) {
+  .scene {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .center-panel { order: 1; }
+  .party-card.alice { order: 2; }
+  .party-card.bob { order: 3; }
+  .eve-panel { order: 4; }
+}
+
+@media (max-width: 900px) {
+  .eve-panel { order: 4; }
+}
+
+@media (max-width: 600px) {
+  .eve-grid strong { font-size: 0.72rem; }
+}
+
+
+/* Final formula exponent fix: keep base and exponent in one atomic inline group.
+   This avoids the broken rendering such as "A = ga mod p" or exponent on a new line. */
+.pow,
+.calc-power,
+.formula-power {
+  display: inline-block !important;
+  position: relative !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  line-height: 1 !important;
+  vertical-align: baseline !important;
+  padding-right: 0.62em !important;
+}
+
+.pow-base {
+  display: inline-block !important;
+  line-height: 1 !important;
+}
+
+.pow-exp {
+  position: absolute !important;
+  left: calc(100% - 0.55em) !important;
+  top: -0.62em !important;
+  display: inline-block !important;
+  font-size: 0.68em !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  vertical-align: baseline !important;
+}
+
+.formula-tip .pow {
+  margin: 0 0.08em;
+}
+
+.calc-line .pow {
+  margin: 0 0.12em;
+}
+
+/* User requested the small demonstration/security banner removed from layout flow. */
+.sec-banner { display: none !important; }
+
+/* Eve now belongs inside the center column, directly under the Agree button. */
+.center-panel > .eve-panel {
+  width: 100%;
+  margin-top: 0;
 }

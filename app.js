@@ -86,17 +86,20 @@ function fmtBig(n) {
 
 /** Show a substituted modular-exponentiation calculation with color-coded HTML. */
 function fmtModExp(label, base, exp, mod, result) {
-  // Each value gets a distinct colour so lay audiences can tell them apart
-  // even when two values happen to be numerically equal.
+  // Keep the base and exponent inside one no-wrap group so the browser
+  // always renders it as g raised to a power, not as broken text.
   return (
     `${label} = ` +
-    `<span class="calc-base">${fmtBig(base)}</span>` +
-    `<sup class="calc-exp">${fmtBig(exp)}</sup>` +
+    `<span class="calc-power pow"><span class="calc-base pow-base">${fmtBig(base)}</span><span class="calc-exp pow-exp">${fmtBig(exp)}</span></span>` +
     ` <span class="calc-mod-kw">mod</span> ` +
     `<span class="calc-mod">${fmtBig(mod)}</span>` +
     ` = ` +
     `<span class="calc-result">${fmtBig(result)}</span>`
   );
+}
+
+function fmtFormulaPower(baseSymbol, expSymbol) {
+  return `<span class="formula-power pow"><span class="pow-base">${baseSymbol}</span><span class="pow-exp">${expSymbol}</span></span>`;
 }
 
 /** Colour legend for lay audiences — explains what each colour means. */
@@ -191,20 +194,19 @@ const errorSecrets       = $('error-secrets');
 const expl               = $('explanation');
 const sharedBadge        = $('shared-badge');
 const badgeKVal          = $('badge-k-val');
-const pubP               = $('pub-p');
-const pubG               = $('pub-g');
 const dotsEl             = $('dots');
 const stepCur            = $('step-cur');
 const inputP             = $('input-p');           // prime field (always visible)
 const inputG             = $('input-g');           // generator field (always visible)
 const inputError         = $('input-error');
-const agreedDisplay      = $('agreed-display');
 const inputA             = $('input-a');
 const inputB             = $('input-b');
 const errorA             = $('error-a');
 const errorB             = $('error-b');
 const secBanner          = $('sec-banner');
 const btnResetP          = $('btn-reset-p');
+const eveCanSee          = $('eve-can-see');
+const eveCannotSee       = $('eve-cannot-see');
 
 // ════════════════════════════════════════════════════════════════
 //  Step definitions — all interpolation uses fmtBig() for large nums
@@ -275,7 +277,7 @@ const STEPS = [
     explanation:  s => `
       <p>Alice mixes her secret number with the shared starting number <strong>g</strong>
          to create her <strong>public number A</strong>. She does this using a special maths trick:</p>
-      <p class="calc-line">A = g<sup>a</sup> mod p &nbsp;→&nbsp; <strong>${fmtModExp('A', s.g, s.a, s.p, s.A)}</strong></p>
+      <p class="calc-line">A = ${fmtFormulaPower('g', 'a')} mod p &nbsp;→&nbsp; <strong>${fmtModExp('A', s.g, s.a, s.p, s.A)}</strong></p>
       ${calcLegend('g', 'a')}
       <div class="mod-explainer">
        <strong>Remember:</strong> "mod p" means take the remainder after dividing by p.<br>
@@ -302,7 +304,7 @@ const STEPS = [
     explanation:  s => `
       <p>Bob does the exact same mixing trick with his own secret number to create his
          <strong>public number B</strong>:</p>
-      <p class="calc-line">B = g<sup>b</sup> mod p &nbsp;→&nbsp; <strong>${fmtModExp('B', s.g, s.b, s.p, s.B)}</strong></p>
+      <p class="calc-line">B = ${fmtFormulaPower('g', 'b')} mod p &nbsp;→&nbsp; <strong>${fmtModExp('B', s.g, s.b, s.p, s.B)}</strong></p>
       ${calcLegend('g', 'b')}
       <div class="mod-explainer">
          Just like Alice, Bob's public number B is safe to share. Even if someone sees B,
@@ -390,10 +392,10 @@ const STEPS = [
     bobSummary:   s => `…  B = ${fmtBig(s.B)},  A = ${fmtBig(s.A)},  K = ${fmtBig(s.K_bob)}`,
     explanation:  s => `
       <p><strong>Alice</strong> uses her secret <em>a</em> and Bob's public information B to compute the shared secret:</p>
-      <p class="calc-line">K = B<sup>a</sup> mod p &nbsp;→&nbsp; <strong>K = ${fmtBig(s.K)}</strong></p>
+      <p class="calc-line">K = ${fmtFormulaPower('B', 'a')} mod p &nbsp;→&nbsp; <strong>K = ${fmtBig(s.K)}</strong></p>
       ${calcLegend('B', 'a')}
       <p><strong>Bob</strong> uses his secret <em>b</em> and Alice's public information A to compute the shared secret:</p>
-      <p class="calc-line">K = A<sup>b</sup> mod p &nbsp;→&nbsp; <strong>K = ${fmtBig(s.K_bob)}</strong></p>
+      <p class="calc-line">K = ${fmtFormulaPower('A', 'b')} mod p &nbsp;→&nbsp; <strong>K = ${fmtBig(s.K_bob)}</strong></p>
       ${calcLegend('A', 'b')}
       <div class="mod-explainer">
          <strong>The magic moment!</strong><br>
@@ -416,10 +418,11 @@ const STEPS = [
  * Called on mode change and whenever the user edits the p field.
  */
 function updateSecBanner(mode = 'custom') {
+  // The small demonstration/security banner was removed from the layout
+  // so it does not push Eve's view out of the intended flow.
   if (!secBanner) return;
-  secBanner.className = 'sec-banner warn';
-  secBanner.textContent =
-    'Small numbers are fine for learning how it works. For real private messages, use much larger numbers (2048+ bits).';
+  secBanner.className = 'sec-banner';
+  secBanner.textContent = '';
 }
 function setMode(mode = 'custom') {
   // No preset is selected by default: users must choose p and g themselves.
@@ -457,6 +460,32 @@ if (btnResetP) {
 
 // Initialise without presets: Alice and Bob must agree on user-entered values.
 setMode('custom');
+
+
+function updateEveAndSignal() {
+  if (!eveCanSee || !eveCannotSee) return;
+
+  if (state.step < 0 || state.p === null) {
+    eveCanSee.textContent = 'Nothing yet';
+    eveCannotSee.textContent = "Alice's a, Bob's b, shared K";
+  } else if (state.step <= 1) {
+    eveCanSee.textContent = `p = ${fmtBig(state.p)}, g = ${fmtBig(state.g)}`;
+    eveCannotSee.textContent = "Alice's a, Bob's b, shared K";
+  } else if (state.step <= 3) {
+    const seen = [`p = ${fmtBig(state.p)}`, `g = ${fmtBig(state.g)}`];
+    if (state.A !== null && state.step >= 2) seen.push(`A = ${fmtBig(state.A)}`);
+    if (state.B !== null && state.step >= 3) seen.push(`B = ${fmtBig(state.B)}`);
+    eveCanSee.textContent = seen.join(', ');
+    eveCannotSee.textContent = "Alice's secret a, Bob's secret b, final K";
+  } else if (state.step <= 5) {
+    eveCanSee.textContent = `p = ${fmtBig(state.p)}, g = ${fmtBig(state.g)}, A = ${fmtBig(state.A)}, B = ${fmtBig(state.B)}`;
+    eveCannotSee.textContent = "Alice's secret a, Bob's secret b, shared K";
+  } else {
+    eveCanSee.textContent = `p = ${fmtBig(state.p)}, g = ${fmtBig(state.g)}, A = ${fmtBig(state.A)}, B = ${fmtBig(state.B)}`;
+    eveCannotSee.textContent = `a, b, and K = ${fmtBig(state.K)} remain hidden`;
+  }
+
+}
 
 // ════════════════════════════════════════════════════════════════
 //  Render step
@@ -541,6 +570,7 @@ function renderStep() {
 
   btnPrev.disabled = state.step <= 0;
   buildDots();
+  updateEveAndSignal();
   typeset([expl, $('alice-card'), $('bob-card')]);
 }
 
@@ -653,25 +683,10 @@ function _finaliseAgree(p, g, label) {
   state = { p, g, a: null, b: null, A: null, B: null, K: null, K_bob: null,
             step: 0, secretsConfirmed: false, mode: 'custom' };
 
-  pubP.textContent = fmtBig(p);
-  pubG.textContent = fmtBig(g);
-  agreedDisplay.style.display = 'flex';
 
-  // ── Bug fix 6: show bit-length info in agreed display ─────────
-  let bitInfoEl = $('agreed-bit-info');
-  if (!bitInfoEl) {
-    bitInfoEl = document.createElement('div');
-    bitInfoEl.id = 'agreed-bit-info';
-    bitInfoEl.style.cssText =
-      'font-size:0.72rem;color:var(--muted);margin-top:0.25rem;font-family:var(--mono);';
-    agreedDisplay.appendChild(bitInfoEl);
-  }
-  const secLevel = pBits >= 2048 ? 'Safe for real use'
-                 : pBits >= 512  ? 'Too small for real use — learning only'
-                 :                  'Very small — demonstration only';
-  bitInfoEl.innerHTML =
-    `<span style="color:${pBits >= 2048 ? 'var(--green)' : 'var(--accent2)'}">${secLevel}</span>` +
-    ` &nbsp;|&nbsp; p is ${pBits} bits long &nbsp;|&nbsp; ${label}`;
+  // Keep the agreed display compact so Eve's view remains aligned in the main row.
+  const oldBitInfo = $('agreed-bit-info');
+  if (oldBitInfo) oldBitInfo.remove();
 
   // Lock parameter inputs while demo runs
   inputP.disabled = true;
@@ -775,7 +790,6 @@ function resetUI() {
 
   $('a-a-val').style.display = 'block';
   $('b-b-val').style.display = 'block';
-  pubP.textContent = '—'; pubG.textContent = '—';
   const bitInfoEl = $('agreed-bit-info');
   if (bitInfoEl) bitInfoEl.textContent = '';
   stepCur.textContent = '0'; dotsEl.innerHTML = '';
@@ -793,12 +807,12 @@ function resetUI() {
   inputP.classList.remove('error');
   inputG.classList.remove('error');
   inputError.textContent = '';
-  agreedDisplay.style.display = 'none';
 
   inputA.value = ''; inputA.style.display = 'none'; inputA.classList.remove('error');
   inputB.value = ''; inputB.style.display = 'none'; inputB.classList.remove('error');
   errorA.textContent = ''; errorB.textContent = '';
   errorSecrets.textContent = ''; confirmWrap.style.display = 'none';
+  updateEveAndSignal();
 
   const aliceEl = $('alice-summary');
   const bobEl   = $('bob-summary');
@@ -813,7 +827,7 @@ function resetUI() {
 
   expl.innerHTML = `
     <p>Alice and Bob need to agree on two numbers that everyone can see — a <strong>prime number p</strong>
-       and a <strong>starting number g</strong>. Type them above and click
+       and a <strong>starting number g</strong>. Type them in the middle panel and click
        <strong>Agree on Parameters</strong> to begin.</p>
     <p>Small numbers are fine for learning. Use the <kbd>←</kbd> <kbd>→</kbd> arrow keys to move between steps.</p>`;
   typeset([expl]);
