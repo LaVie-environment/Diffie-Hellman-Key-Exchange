@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   Diffie-Hellman Demo 
+   Diffie-Hellman Demo — style.css  (Redesigned: Soft Lavender Light)
    ═══════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500;600&display=swap');
@@ -574,14 +574,17 @@ main {
 .reset-link:hover { background: var(--accent-lt); }
 .reset-link:disabled { opacity: 0.35; cursor: default; }
 
-/* ── Textarea variant ────────────────────────────────────────────── */
+/* ── Textarea variant — sized to match the single-line input-g ───── */
 .param-textarea {
-  resize: vertical;
-  min-height: 3rem;
-  font-size: 0.78rem;
-  line-height: 1.55;
+  resize: none;
+  height: auto;
+  min-height: unset;
+  rows: 1;
+  font-size: 1rem;
+  line-height: 1.4;
   word-break: break-all;
   font-family: var(--mono);
+  overflow-y: hidden;
 }
 
 /* ── Custom mode warning ─────────────────────────────────────────── */
