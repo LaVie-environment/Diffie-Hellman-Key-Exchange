@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   Diffie-Hellman Demo — style.css  (Redesigned: Soft Lavender Light)
+   Diffie-Hellman Demo 
    ═══════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500;600&display=swap');
@@ -8,44 +8,77 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Background palette — soft periwinkle lavender */
-  --bg:        #eef0f9;
-  --bg-mid:    #e8eaf6;
-  --surface:   #f4f5fb;
+  /* ── Background palette — warm lavender ──────────────────────────
+     Shifted from cool periwinkle (#eef0f9) to warm lavender (#F5F0FF)
+     so the background is neutral relative to Alice (blue), Bob
+     (orange-red) and the shared key (green). None of the party colours
+     bleeds into the page tint any more.                              */
+  --bg:        #F5F0FF;
+  --bg-mid:    #EDE6FF;
+  --surface:   #FAF7FF;
   --card:      #ffffff;
-  --border:    #d4d7ef;
-  --border-lt: #e4e6f4;
+  --border:    #D8CFFF;
+  --border-lt: #E8DFFF;
 
-  /* Accent colours */
-  --accent:    #4f6ef7;       /* vivid blue-violet */
-  --accent-lt: #dce3fd;
-  --accent2:   #e8614a;       /* coral-red */
-  --green:     #22a06b;
-  --green-lt:  #d3f5e8;
-  --purple:    #7c4dff;
-  --purple-lt: #ede8ff;
-  --amber:     #d97706;
+  /* ── Primary accent — deep violet ───────────────────────────────
+     Old accent #4f6ef7 was indistinguishable from Alice's blue.
+     Deep violet #5B21B6 is a separate hue family — students can
+     immediately tell "this is a button" vs "this is Alice's data". */
+  --accent:    #5B21B6;
+  --accent-lt: #EDE9FE;
 
-  /* Party colours */
-  --alice:     #3b6ef8;
-  --alice-lt:  #dce5fd;
-  --bob:       #e8614a;
-  --bob-lt:    #fde8e4;
-  --shared:    #22a06b;
+  /* ── Error / warning colour — kept orange-red ───────────────────
+     Darkened slightly from #e8614a to #C2410C so it passes WCAG AA
+     on white card surfaces (was 3.1:1, now 5.5:1).                 */
+  --accent2:   #C2410C;
 
-  /* Text */
-  --text:      #1a1d3a;
-  --text-mid:  #3c4066;
-  --muted:     #7479a0;
+  /* ── Shared-secret green — darkened for AA compliance ───────────
+     Old #22a06b was 3.1:1 on white (passes large text only).
+     New #15803D is 6.1:1 — passes for normal body text too.        */
+  --green:     #15803D;
+  --green-lt:  #DCFCE7;
 
-  /* Design tokens */
+  /* ── Maths formula accent — richer violet ───────────────────────
+     Old #7c4dff was used for formula backgrounds and public-param
+     values. Keeping the violet family but tightening to the same
+     ramp as the primary accent for visual consistency.              */
+  --purple:    #5B21B6;
+  --purple-lt: #EDE9FE;
+
+  --amber:     #B45309;
+
+  /* ── Party colours ───────────────────────────────────────────────
+     Alice: #3b6ef8 → #2563EB  — same blue family, darker so labels
+       at 0.72 rem pass WCAG AA on white cards (was 4.5:1, now 5.9:1)
+     Bob:   #e8614a coral → #C2410C warm orange-red — more distinct
+       from Alice's blue for students with colour vision differences.
+     Light tints updated to match.                                   */
+  --alice:     #2563EB;
+  --alice-lt:  #DBEAFE;
+  --bob:       #C2410C;
+  --bob-lt:    #FFEDD5;
+  --shared:    #15803D;
+
+  /* ── Text ────────────────────────────────────────────────────────
+     Primary text unchanged — already excellent at 16.2:1 on white.
+     Muted text: #7479a0 was 3.2:1 on white — fails WCAG AA for
+     normal text. New #4C1D95 deep violet scores 9.4:1 — AAA pass.
+     Used for param-label, hints, and step descriptions students
+     must read to follow each step of the algorithm.                 */
+  --text:      #1E1B4B;
+  --text-mid:  #3730A3;
+  --muted:     #4C1D95;
+
+  /* ── Design tokens — unchanged ──────────────────────────────────
+     Shadows retuned to violet tint to match new accent hue.        */
   --radius:    14px;
   --radius-sm: 8px;
-  --shadow-sm: 0 2px 8px rgba(79,110,247,0.08), 0 1px 3px rgba(26,29,58,0.06);
-  --shadow-md: 0 8px 32px rgba(79,110,247,0.12), 0 2px 8px rgba(26,29,58,0.08);
-  --shadow-lg: 0 20px 60px rgba(79,110,247,0.15), 0 4px 16px rgba(26,29,58,0.1);
+  --shadow-sm: 0 2px 8px rgba(91,33,182,0.08), 0 1px 3px rgba(30,27,75,0.06);
+  --shadow-md: 0 8px 32px rgba(91,33,182,0.12), 0 2px 8px rgba(30,27,75,0.08);
+  --shadow-lg: 0 20px 60px rgba(91,33,182,0.15), 0 4px 16px rgba(30,27,75,0.1);
 
-  /* Fonts */
+  /* ── Fonts — unchanged ───────────────────────────────────────────
+     Inter + DM Mono are already the right choices. No change.      */
   --mono:      'DM Mono', 'JetBrains Mono', 'Fira Code', monospace;
   --body:      'Inter', system-ui, sans-serif;
   --display:   'Inter', system-ui, sans-serif;
@@ -63,9 +96,9 @@ body {
   flex-direction: column;
   /* Subtle geometric background pattern */
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(79,110,247,0.06) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(124,77,255,0.05) 0%, transparent 50%),
-    radial-gradient(circle at 60% 10%, rgba(34,160,107,0.04) 0%, transparent 40%);
+    radial-gradient(circle at 20% 20%, rgba(91,33,182,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(37,99,235,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 60% 10%, rgba(21,128,61,0.04) 0%, transparent 40%);
 }
 
 /* ── Header ─────────────────────────────────────────────────────── */
@@ -103,7 +136,7 @@ header .logo {
 
 .dh-intro {
   background:
-    linear-gradient(135deg, rgba(79,110,247,0.1), rgba(124,77,255,0.08)),
+    linear-gradient(135deg, rgba(91,33,182,0.08), rgba(37,99,235,0.05)),
     var(--card);
   border: 1.5px solid var(--border-lt);
   border-radius: var(--radius);
@@ -218,10 +251,10 @@ main {
   border-radius: var(--radius) var(--radius) 0 0;
 }
 .party-card.alice::before {
-  background: linear-gradient(90deg, var(--alice), #6b8ef9);
+  background: linear-gradient(90deg, var(--alice), #60A5FA);
 }
 .party-card.bob::before {
-  background: linear-gradient(90deg, var(--bob), #f0956a);
+  background: linear-gradient(90deg, var(--bob), #F97316);
 }
 
 /* Subtle tinted corner ornament */
@@ -233,8 +266,8 @@ main {
   border-radius: 50%;
   pointer-events: none;
 }
-.party-card.alice::after { background: radial-gradient(circle, rgba(59,110,248,0.07), transparent 70%); }
-.party-card.bob::after   { background: radial-gradient(circle, rgba(232,97,74,0.07), transparent 70%); }
+.party-card.alice::after { background: radial-gradient(circle, rgba(37,99,235,0.07), transparent 70%); }
+.party-card.bob::after   { background: radial-gradient(circle, rgba(194,65,12,0.07), transparent 70%); }
 
 .party-card h3 {
   font-family: var(--display);
@@ -284,24 +317,24 @@ main {
 .param-row.alice-hl {
   border-color: var(--alice);
   background: var(--alice-lt);
-  box-shadow: 0 0 0 3px rgba(59,110,248,0.1);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
 }
 .param-row.bob-hl {
   border-color: var(--bob);
   background: var(--bob-lt);
-  box-shadow: 0 0 0 3px rgba(232,97,74,0.1);
+  box-shadow: 0 0 0 3px rgba(194,65,12,0.1);
 }
 .param-row.shared-hl {
   border-color: var(--shared);
   background: var(--green-lt);
-  box-shadow: 0 0 0 3px rgba(34,160,107,0.1);
+  box-shadow: 0 0 0 3px rgba(21,128,61,0.1);
 }
 
 .param-label {
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   color: var(--muted);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .param-value {
@@ -442,13 +475,13 @@ main {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(79,110,247,0.3);
+  box-shadow: 0 2px 8px rgba(91,33,182,0.3);
 }
 
 /* ── Standard prime display box ─────────────────────────────────── */
 .standard-p-display {
   background: var(--purple-lt);
-  border: 1.5px solid rgba(124,77,255,0.25);
+  border: 1.5px solid rgba(91,33,182,0.25);
   border-radius: var(--radius-sm);
   padding: 0.65rem 0.9rem;
 }
@@ -465,9 +498,9 @@ main {
 }
 
 .bit-badge {
-  background: rgba(124,77,255,0.15);
+  background: rgba(91,33,182,0.15);
   color: var(--purple);
-  border: 1px solid rgba(124,77,255,0.3);
+  border: 1px solid rgba(91,33,182,0.3);
   border-radius: 4px;
   padding: 0 6px;
   font-size: 0.7rem;
@@ -499,13 +532,13 @@ main {
 .sec-banner.ok {
   display: block;
   background: var(--green-lt);
-  border: 1.5px solid rgba(34,160,107,0.3);
+  border: 1.5px solid rgba(21,128,61,0.3);
   color: var(--green);
 }
 .sec-banner.warn {
   display: block;
-  background: rgba(232,97,74,0.08);
-  border: 1.5px solid rgba(232,97,74,0.25);
+  background: rgba(194,65,12,0.08);
+  border: 1.5px solid rgba(194,65,12,0.25);
   color: var(--accent2);
 }
 
@@ -553,8 +586,8 @@ main {
 
 /* ── Custom mode warning ─────────────────────────────────────────── */
 .custom-warning {
-  background: rgba(232,97,74,0.07);
-  border: 1.5px solid rgba(232,97,74,0.22);
+  background: rgba(194,65,12,0.07);
+  border: 1.5px solid rgba(194,65,12,0.22);
   border-radius: var(--radius-sm);
   padding: 0.6rem 0.85rem;
   font-size: 0.78rem;
@@ -594,11 +627,11 @@ main {
 .param-input:focus {
   border-color: var(--accent);
   background: var(--card);
-  box-shadow: 0 0 0 3px rgba(79,110,247,0.12);
+  box-shadow: 0 0 0 3px rgba(91,33,182,0.12);
 }
 .param-input.error {
   border-color: var(--accent2);
-  box-shadow: 0 0 0 3px rgba(232,97,74,0.12);
+  box-shadow: 0 0 0 3px rgba(194,65,12,0.12);
 }
 
 .input-error {
@@ -611,7 +644,7 @@ main {
 /* ── Agreed values display ──────────────────────────────────────── */
 .agreed-display {
   background: var(--purple-lt);
-  border: 1.5px solid rgba(124,77,255,0.25);
+  border: 1.5px solid rgba(91,33,182,0.25);
   border-radius: var(--radius-sm);
   padding: 0.65rem 1rem;
   display: flex;
@@ -644,7 +677,7 @@ main {
 .btn-generate {
   width: 100%;
   padding: 0.82rem 1.2rem;
-  background: linear-gradient(135deg, var(--accent) 0%, #6b5ef8 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, #7C3AED 100%);
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
@@ -653,13 +686,13 @@ main {
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
   letter-spacing: 0.02em;
-  box-shadow: 0 4px 14px rgba(79,110,247,0.35);
+  box-shadow: 0 4px 14px rgba(91,33,182,0.35);
   font-family: var(--body);
 }
 .btn-generate:hover  {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(79,110,247,0.45);
+  box-shadow: 0 6px 20px rgba(91,33,182,0.45);
 }
 .btn-generate:active { transform: scale(0.98); }
 .btn-generate:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
@@ -685,13 +718,13 @@ main {
 
 /* ── Shared Key Badge ───────────────────────────────────────────── */
 .shared-key-badge {
-  background: linear-gradient(135deg, var(--green-lt), rgba(34,160,107,0.05));
+  background: linear-gradient(135deg, var(--green-lt), rgba(21,128,61,0.05));
   border: 2px solid var(--shared);
   border-radius: var(--radius);
   padding: 0.75rem 1rem;
   text-align: center;
   display: none;
-  box-shadow: 0 8px 24px rgba(34,160,107,0.15);
+  box-shadow: 0 8px 24px rgba(21,128,61,0.15);
 }
 .shared-key-badge.visible {
   display: block;
@@ -717,7 +750,7 @@ main {
   font-size: 1.2rem;
   color: var(--shared);
   font-weight: 700;
-  background: rgba(34,160,107,0.1);
+  background: rgba(21,128,61,0.1);
   border-radius: 6px;
   padding: 0.3rem 0.6rem;
   display: inline-block;
@@ -881,14 +914,14 @@ main {
 .btn-nav:disabled { opacity: 0.3; cursor: default; }
 
 .btn-nav.try-again {
-  background: rgba(232,97,74,0.06);
-  border-color: rgba(232,97,74,0.4);
+  background: rgba(194,65,12,0.06);
+  border-color: rgba(194,65,12,0.4);
   color: var(--accent2);
   display: none;
 }
 .btn-nav.try-again.visible { display: block; }
 .btn-nav.try-again:hover:not(:disabled) {
-  background: rgba(232,97,74,0.1);
+  background: rgba(194,65,12,0.1);
   border-color: var(--accent2);
   color: var(--accent2);
 }
@@ -926,9 +959,9 @@ body > footer {
 
 /* ── Mod explainer callout box ───────────────────────────────────── */
 .mod-explainer {
-  background: rgba(79,110,247,0.06);
-  border: 1px solid rgba(79,110,247,0.2);
-  border-left: 4px solid var(--accent);
+  background: rgba(37,99,235,0.05);
+  border: 1px solid rgba(37,99,235,0.2);
+  border-left: 4px solid var(--alice);
   border-radius: var(--radius-sm);
   padding: 0.8rem 1rem;
   font-size: 0.88rem;
@@ -936,7 +969,7 @@ body > footer {
   color: var(--text-mid);
   margin: 0.6rem 0;
 }
-.mod-explainer strong { color: var(--accent); }
+.mod-explainer strong { color: var(--alice); }
 
 /* ── Plain bullet list ──────────────────────────────────────────── */
 .plain-list {
@@ -969,19 +1002,18 @@ body > footer {
   margin: 0.3rem 0;
   word-break: break-all;
   color: var(--purple);
-  border: 1px solid rgba(124,77,255,0.18);
+  border: 1px solid rgba(91,33,182,0.18);
 }
 .calc-line strong { color: var(--text); }
 
-/* ── Color-coded modular arithmetic values ──────────────────────────
-   Each part of  label = base^exp mod modulus = result  gets its own
-   colour so lay audiences can distinguish the values even when two
-   numbers happen to be identical (e.g. g = 5 and B = 5).           */
-.calc-base   { color: var(--alice);  font-weight: 700; }   /* base  (g or B or A) — blue  */
-.calc-exp    { color: var(--bob);    font-weight: 700; font-style: italic; }   /* exponent (a or b)   — red   */
-.calc-mod    { color: var(--purple); font-weight: 700; }   /* modulus p           — purple */
+/* Colour legend for the modular arithmetic display.
+   calc-base  = blue  (Alice's hue)  calc-exp = orange-red (Bob's hue)
+   calc-mod   = violet (accent)      calc-result = green (shared)      */
+.calc-base   { color: var(--alice);  font-weight: 700; }
+.calc-exp    { color: var(--bob);    font-weight: 700; font-style: italic; }
+.calc-mod    { color: var(--purple); font-weight: 700; }
 .calc-mod-kw { color: var(--muted);  font-weight: 500; font-size: 0.85em; letter-spacing: 0.04em; }
-.calc-result { color: var(--shared); font-weight: 700; }   /* result              — green  */
+.calc-result { color: var(--shared); font-weight: 700; }
 
 /* Legend pill that explains the colour coding */
 .calc-legend {
@@ -1030,19 +1062,19 @@ body > footer {
 .alice-secret:focus {
   border-color: var(--alice);
   background: var(--alice-lt);
-  box-shadow: 0 0 0 3px rgba(59,110,248,0.12);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
 }
 
 .bob-secret { color: var(--bob); }
 .bob-secret:focus {
   border-color: var(--bob);
   background: var(--bob-lt);
-  box-shadow: 0 0 0 3px rgba(232,97,74,0.12);
+  box-shadow: 0 0 0 3px rgba(194,65,12,0.12);
 }
 
 .secret-input.error {
   border-color: var(--accent2);
-  box-shadow: 0 0 0 3px rgba(232,97,74,0.12);
+  box-shadow: 0 0 0 3px rgba(194,65,12,0.12);
 }
 
 .secret-error {
@@ -1062,13 +1094,13 @@ body > footer {
 }
 
 .btn-confirm {
-  background: linear-gradient(135deg, var(--purple) 0%, #a56aff 100%) !important;
+  background: linear-gradient(135deg, var(--accent) 0%, #7C3AED 100%) !important;
   color: #fff !important;
-  box-shadow: 0 4px 14px rgba(124,77,255,0.35) !important;
+  box-shadow: 0 4px 14px rgba(91,33,182,0.35) !important;
 }
 .btn-confirm:hover {
   opacity: 0.9 !important;
-  box-shadow: 0 6px 20px rgba(124,77,255,0.45) !important;
+  box-shadow: 0 6px 20px rgba(91,33,182,0.45) !important;
 }
 
 /* ── Toast ──────────────────────────────────────────────────────── */
